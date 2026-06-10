@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bible, in Order — a story map</title>
+<meta name="description" content="Every era, event, person, and book of the Bible in story order, with honest date flags and links to BibleProject's free guides.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141d30;
+  --ink-2:#1b2640;
+  --ink-3:#243150;
+  --gold:#d6a644;
+  --gold-deep:#a87f2c;
+  --gold-pale:#ecd9a8;
+  --parch:#f7f1e2;
+  --parch-2:#ece2cb;
+  --parch-line:#d8c9a6;
+  --text-dark:#2b2519;
+  --text-soft:#6b6044;
+  --text-light:#e8e1cd;
+  --text-dim:#9aa0b4;
+  --copper:#c06a3e;
+  --reed:#48796d;
+  --bar-h:118px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--ink);
+  background-image:radial-gradient(ellipse 90% 50% at 50% -10%, #25325650 0%, transparent 60%);
+  color:var(--text-light);
+  font-family:"Alegreya Sans", system-ui, sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+a{color:var(--gold-pale)}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+/* ---------- hero ---------- */
+.hero{max-width:820px;margin:0 auto;padding:58px 20px 26px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+h1{
+  font-family:"Fraunces", Georgia, serif;font-weight:600;
+  font-size:clamp(2.5rem, 8vw, 3.9rem);line-height:1.04;
+  margin:.25em 0 .3em;color:var(--parch);
+}
+.lede{font-size:1.08rem;color:var(--text-dim);max-width:62ch;margin:0 0 26px}
+.lede b{color:var(--text-light);font-weight:500}
+.steps{list-style:none;counter-reset:s;margin:0 0 26px;padding:0;display:grid;gap:12px}
+.steps li{counter-increment:s;position:relative;padding-left:52px;color:var(--text-dim)}
+.steps li b{color:var(--text-light);font-weight:700}
+.steps li::before{
+  content:counter(s);position:absolute;left:0;top:1px;
+  width:34px;height:34px;border-radius:50%;
+  border:1.5px solid var(--gold-deep);color:var(--gold);
+  font-family:"Fraunces", Georgia, serif;font-size:1.05rem;
+  display:grid;place-items:center;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  padding:11px 18px;border-radius:9px;font-weight:700;font-size:.95rem;border:1.5px solid transparent;
+}
+.btn-gold{background:var(--gold);color:#241b07}
+.btn-gold:hover{background:var(--gold-pale)}
+.btn-ghost{border-color:var(--gold-deep);color:var(--gold-pale)}
+.btn-ghost:hover{border-color:var(--gold)}
+.notice{
+  background:var(--ink-2);border:1px solid var(--ink-3);border-left:3px solid var(--gold-deep);
+  border-radius:10px;padding:14px 16px;font-size:.93rem;color:var(--text-dim);margin-bottom:14px;
+}
+.notice b{color:var(--text-light)}
+.legend{display:grid;gap:6px;font-size:.88rem;color:var(--text-dim);margin-top:10px}
+.legend .lrow{display:flex;align-items:center;gap:10px}
+.legend b{color:var(--text-light);font-weight:700}
+
+/* date chips */
+.chip{
+  display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.02em;
+  padding:2px 9px;border-radius:99px;white-space:nowrap;flex:none;
+}
+.chip.s{background:#efe3c2;border:1.5px solid var(--gold-deep);color:#5d4516}
+.chip.t{background:transparent;border:1.5px dashed #b39653;color:#7a6534}
+.chip.d{background:transparent;border:1.5px dotted #b08f4f;color:#7a6534}
+.chip.n{background:transparent;border:1.5px solid #cfc3a2;color:#8d8161;font-style:italic}
+.legend .chip.t,.legend .chip.d,.legend .chip.n,.era-meta .chip.t,.era-meta .chip.d,.era-meta .chip.n{color:#cdbd8d;border-color:#8a7440}
+.legend .chip.s,.era-meta .chip.s{background:#33405f;border-color:var(--gold-deep);color:var(--gold-pale)}
+
+/* ---------- sticky bar ---------- */
+.bar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(18,26,44,.93);backdrop-filter:blur(10px);
+  border-top:1px solid var(--ink-3);border-bottom:1px solid rgba(214,166,68,.28);
+  padding:10px 14px 8px;
+}
+.bar-inner{max-width:820px;margin:0 auto;display:grid;gap:8px}
+.search-row{display:flex;gap:8px;align-items:center}
+.search{
+  flex:1;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:9px;
+  color:var(--text-light);padding:9px 13px;font-size:.95rem;min-width:0;
+}
+.search::placeholder{color:#6f7790}
+.search:focus{border-color:var(--gold-deep);outline:none}
+.progress{font-size:.76rem;color:var(--gold-pale);white-space:nowrap}
+.chips-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;align-items:center}
+.chips-row::-webkit-scrollbar{display:none}
+.fchip{
+  flex:none;background:var(--ink-2);border:1px solid var(--ink-3);color:var(--text-dim);
+  border-radius:99px;padding:5px 13px;font-size:.82rem;font-weight:700;cursor:pointer;
+}
+.fchip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#241b07}
+.vsep{flex:none;width:1px;height:20px;background:var(--ink-3);margin:0 4px}
+.epill{
+  flex:none;color:var(--text-dim);text-decoration:none;border:1px solid transparent;
+  border-radius:99px;padding:5px 11px;font-size:.8rem;
+}
+.epill:hover{color:var(--gold-pale);border-color:var(--ink-3)}
+
+/* ---------- timeline & thread ---------- */
+.timeline{position:relative;max-width:820px;margin:0 auto;padding:6px 16px 30px}
+.thread{
+  position:absolute;left:35px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom, transparent, var(--gold-deep) 90px, var(--gold-deep) calc(100% - 40px), transparent);
+  opacity:.85;
+}
+.t-label{
+  position:relative;padding-left:64px;margin:34px 0 -8px;
+  font-size:.72rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);
+}
+.era{position:relative;padding-left:64px;margin-top:44px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.medal{
+  position:absolute;left:35px;top:2px;transform:translateX(-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--gold);
+  color:var(--gold);font-family:"Fraunces", Georgia, serif;font-size:1.15rem;
+  display:grid;place-items:center;
+  box-shadow:0 0 0 6px var(--ink), 0 0 22px rgba(214,166,68,.35);
+}
+.era h2{
+  font-family:"Fraunces", Georgia, serif;font-weight:600;color:var(--gold-pale);
+  font-size:clamp(1.35rem, 4.5vw, 1.7rem);margin:0 0 2px;line-height:1.15;
+}
+.era-meta{font-size:.84rem;color:var(--text-dim);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.era-sum{color:var(--text-dim);font-size:.97rem;max-width:60ch;margin:0 0 6px}
+.era-link{font-size:.9rem;font-weight:700;color:var(--gold-pale);text-decoration:none;border-bottom:1px solid var(--gold-deep)}
+.era-link:hover{color:var(--gold)}
+.era-count{font-size:.78rem;color:#707894}
+
+/* node cards */
+.list{margin-top:14px;display:grid;gap:9px}
+.item{
+  background:var(--parch);border-radius:11px;overflow:hidden;
+  border-left:4px solid var(--gold);
+  box-shadow:0 1px 0 rgba(0,0,0,.35);
+}
+.item.p{border-left-color:var(--copper)}
+.item.bk{border-left-color:var(--reed)}
+.row{
+  width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+  background:none;border:0;cursor:pointer;padding:11px 13px;color:var(--text-dark);
+}
+.mark{flex:none;width:10px;height:10px;border-radius:50%;background:var(--gold-deep)}
+.item.p .mark{background:var(--copper)}
+.item.bk .mark{background:var(--reed);border-radius:2px}
+.nm{flex:1;font-weight:700;font-size:.99rem;line-height:1.25}
+.kind{flex:none;font-size:.66rem;font-weight:700;letter-spacing:.08em;color:var(--text-soft);text-transform:uppercase}
+.done-tick{flex:none;color:var(--gold-deep);font-weight:700;display:none}
+.item.done .done-tick{display:inline}
+.caret{flex:none;color:var(--text-soft);transition:transform .2s}
+.item.open .caret{transform:rotate(90deg)}
+.detail{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.item.open .detail{max-height:560px}
+.detail-in{padding:2px 15px 14px;border-top:1px solid var(--parch-line);margin:0 13px;padding-left:2px;padding-right:2px}
+.blurb{color:var(--text-dark);font-size:.95rem;margin:10px 0 8px}
+.meta-line{font-size:.82rem;color:var(--text-soft);margin:0 0 4px}
+.meta-line b{color:#4d4226}
+.dnote{font-size:.82rem;color:var(--text-soft);font-style:italic;margin:0 0 10px}
+.detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.bp-btn{
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  background:var(--ink);color:var(--gold-pale);font-weight:700;font-size:.86rem;
+  padding:8px 13px;border-radius:8px;
+}
+.bp-btn:hover{background:var(--ink-3)}
+.seen-btn{
+  background:none;border:1.5px solid var(--parch-line);color:var(--text-soft);
+  border-radius:8px;padding:7px 12px;font-size:.84rem;font-weight:700;cursor:pointer;
+}
+.item.done .seen-btn{border-color:var(--gold-deep);color:#5d4516;background:#efe3c2}
+
+/* NT divider */
+.divider{position:relative;padding-left:64px;margin:54px 0 -10px}
+.divider .dmark{
+  position:absolute;left:35px;top:50%;transform:translate(-50%,-50%) rotate(45deg);
+  width:14px;height:14px;background:var(--gold);box-shadow:0 0 0 5px var(--ink),0 0 18px rgba(214,166,68,.5);
+}
+.divider span{
+  font-family:"Fraunces", Georgia, serif;color:var(--gold);font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;
+}
+.empty{display:none;padding:36px 16px;text-align:center;color:var(--text-dim)}
+.endcap{position:relative;padding:34px 16px 10px 64px;color:var(--text-dim);font-style:italic;font-size:.95rem}
+
+/* footer */
+footer{max-width:820px;margin:30px auto 0;padding:26px 20px 70px;border-top:1px solid var(--ink-3);color:#7d849e;font-size:.85rem}
+footer p{margin:0 0 10px}
+footer a{color:var(--gold-pale)}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  .thread{left:26px}
+  .medal{left:26px;width:38px;height:38px;font-size:1rem}
+  .era,.t-label,.divider,.endcap{padding-left:50px}
+  .divider .dmark{left:26px}
+  .kind{display:none}
+  :root{--bar-h:128px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none !important}
+}
+@media print{
+  body{background:#fff;color:#000}
+  .bar,.hero-actions,.thread,.bp-btn,.seen-btn,.caret{display:none !important}
+  .item{border:1px solid #999;box-shadow:none}
+  .detail{max-height:none !important}
+  .era h2,.medal,.divider span{color:#000;-webkit-print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">A story map for the rest of us</div>
+  <h1>The Bible, in Order</h1>
+  <p class="lede">Sixty-six books, <b>one storyline</b>. Twelve eras from creation to the early church — the major events, people, and books in the order they happen in the story, each one pointing to <b>BibleProject’s free guides and videos</b> when you want to go deeper.</p>
+  <ol class="steps">
+    <li><b>Find your spot.</b> Scroll the eras, or search anything — “David,” “Exodus,” “Pentecost.”</li>
+    <li><b>Get the gist.</b> Every item has a short summary, its place in the story, and an honest date flag.</li>
+    <li><b>Go deeper.</b> Tap through to the BibleProject overview and let them take it from there.</li>
+  </ol>
+  <div class="hero-actions">
+    <a class="btn btn-gold" href="#era-1">Start at the beginning ↓</a>
+    <a class="btn btn-ghost" href="https://bibleproject.com/guides/" target="_blank" rel="noopener">Browse BibleProject ↗</a>
+  </div>
+  <div class="notice">
+    <b>Heads up: the Bible’s table of contents isn’t chronological.</b> The prophets interleave with Kings, Psalms spans centuries, and the four Gospels overlap. This map sorts everything by <b>when it happens in the story</b> — each book sits where its story is set, with a note whenever it was written much later.
+  </div>
+  <div class="notice">
+    <b>How the date flags work.</b> The <i>sequence</i> here is simply the Bible’s own storyline. The <i>dates</i> vary in confidence, so every one is flagged:
+    <div class="legend">
+      <div class="lrow"><span class="chip s">722 BC</span><span><b>Anchored</b> — lines up with records outside the Bible; about as solid as ancient dates get.</span></div>
+      <div class="lrow"><span class="chip t">≈ 2000 BC</span><span><b>Traditional</b> — the commonly taught ballpark; a rough guide, not a fact.</span></div>
+      <div class="lrow"><span class="chip d">debated</span><span><b>Debated</b> — scholars genuinely disagree; we show the range or options.</span></div>
+      <div class="lrow"><span class="chip n">undated</span><span><b>Undated</b> — the Bible doesn’t put a date on it, and neither do we.</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="bar" id="bar">
+  <div class="bar-inner">
+    <div class="search-row">
+      <input class="search" id="search" type="search" placeholder="Search people, events, books…" aria-label="Search the timeline">
+      <span class="progress" id="progress"></span>
+    </div>
+    <div class="chips-row" id="chips">
+      <button class="fchip" data-f="all" aria-pressed="true">All</button>
+      <button class="fchip" data-f="ev" aria-pressed="false">Events</button>
+      <button class="fchip" data-f="p" aria-pressed="false">People</button>
+      <button class="fchip" data-f="bk" aria-pressed="false">Books</button>
+      <span class="vsep" aria-hidden="true"></span>
+      <span id="erapills" style="display:contents"></span>
+    </div>
+  </div>
+</div>
+
+<main class="timeline" id="timeline">
+  <div class="thread" aria-hidden="true"></div>
+  <div id="eras"></div>
+  <div class="empty" id="empty"></div>
+  <div class="endcap">…and the story continues. <span style="white-space:nowrap">(Revelation 22:20)</span></div>
+</main>
+
+<footer>
+  <p><b style="color:var(--text-light)">About this page.</b> A fan-made study aid for family and friends who feel overwhelmed by the Bible — built to show where things fit, not to settle scholarly debates. It is <b>not affiliated with or endorsed by BibleProject</b>; all linked videos and guides are theirs, free at <a href="https://bibleproject.com" target="_blank" rel="noopener">bibleproject.com</a>, and this page exists to point you their way.</p>
+  <p>The sequence follows the Bible’s own storyline. Dates are simplified on purpose: many ancient dates are traditional or debated, and each item’s flag says which is which. Great for getting your bearings — please don’t cite it in a term paper.</p>
+  <p>Progress checkmarks are saved only in this browser on this device.</p>
+</footer>
+
+<script>
+const BP = "https://bibleproject.com/guides/";
+/* Era: id, name, span (scripture), date, dc (s/t/d/n), sum, bp slug ("" = guides hub), bpl label */
+const ERAS = [
+ {id:1, name:"Primeval History", span:"Genesis 1–11", date:"undated", dc:"n",
+  sum:"Creation, a broken trust, a flood, and a scattered humanity. Eleven chapters that set up every theme the rest of the Bible develops.",
+  bp:"book-of-genesis", bpl:"Genesis overview"},
+ {id:2, name:"The Patriarchs", span:"Genesis 12–50 · Job", date:"≈ 2000–1700 BC", dc:"t",
+  sum:"God narrows the focus to one family — Abraham, Isaac, Jacob, Joseph — and promises that through them, blessing will reach all nations.",
+  bp:"book-of-genesis", bpl:"Genesis overview"},
+ {id:3, name:"Exodus & Wilderness", span:"Exodus – Deuteronomy", date:"≈ 1446 or 1260 BC", dc:"d",
+  sum:"God frees Israel from slavery in Egypt, makes a covenant with them at Mount Sinai, and walks them through forty years of wilderness.",
+  dn:"The Exodus has two major scholarly date camps — roughly 1446 BC or 1260 BC. Everything in this era shifts with your pick.",
+  bp:"book-of-exodus", bpl:"Exodus overview"},
+ {id:4, name:"Conquest of Canaan", span:"Joshua", date:"one generation later", dc:"d",
+  sum:"Under Joshua, the next generation crosses the Jordan, takes the land, and divides it among the twelve tribes — the promise to Abraham, on the map.",
+  dn:"Dated relative to the Exodus, so it inherits the same debate.",
+  bp:"book-of-joshua", bpl:"Joshua overview"},
+ {id:5, name:"The Judges", span:"Judges · Ruth · 1 Samuel 1–7", date:"≈ 1350–1050 BC", dc:"t",
+  sum:"Israel’s dark age: no king, and a repeating spiral — forget God, fall into trouble, cry out, get rescued, repeat. “Everyone did what was right in their own eyes.”",
+  bp:"book-of-judges", bpl:"Judges overview"},
+ {id:6, name:"The United Kingdom", span:"1 Samuel 8 – 1 Kings 11", date:"≈ 1050–930 BC", dc:"t",
+  sum:"Israel gets the king it asked for. Saul stumbles, David unites the nation and receives a forever-dynasty promise, Solomon builds the temple — then drifts.",
+  bp:"books-of-samuel", bpl:"1–2 Samuel overview"},
+ {id:7, name:"The Divided Kingdom", span:"1 Kings 12 – 2 Kings 25", date:"930–586 BC", dc:"s",
+  sum:"The nation splits in two: Israel (north) and Judah (south). Most of the prophets preach here. Assyria erases the north in 722 BC; Babylon burns Jerusalem in 586 BC.",
+  bp:"books-of-kings", bpl:"1–2 Kings overview"},
+ {id:8, name:"The Exile", span:"Daniel · Ezekiel · Lamentations", date:"586–538 BC", dc:"s",
+  sum:"Judah weeps by the rivers of Babylon. No land, no temple, no king — and yet faith survives, and prophets see visions of return.",
+  bp:"book-of-daniel", bpl:"Daniel overview"},
+ {id:9, name:"Return & Rebuilding", span:"Ezra · Nehemiah · Esther", date:"538–≈430 BC", dc:"s",
+  sum:"Persia lets the exiles go home in waves. A humbler temple rises, the walls go back up, the Law is read aloud — and the Old Testament story closes, still waiting.",
+  bp:"book-of-ezra-nehemiah", bpl:"Ezra–Nehemiah overview"},
+ {id:10, name:"Between the Testaments", span:"the “400 silent years”", date:"≈ 430–6 BC", dc:"s",
+  sum:"No biblical books here (in most Bibles) — but history sprints: Greeks, the Maccabees, Romans, and Herod build the exact world the Gospels open in.",
+  bp:"", bpl:"Browse BibleProject guides"},
+ {id:11, name:"Jesus", span:"Matthew · Mark · Luke · John", date:"≈ 6 BC – AD 30/33", dc:"d",
+  sum:"The center of the whole story. Four overlapping accounts of one life: birth, ministry, crucifixion, resurrection.",
+  dn:"Jesus was likely born 6–4 BC (a later calendar miscalculation put “year 1” a bit late). The crucifixion is AD 30 or 33 — both fit the evidence.",
+  bp:"book-of-luke", bpl:"Luke overview"},
+ {id:12, name:"The Early Church", span:"Acts – Revelation", date:"≈ AD 30–100", dc:"s",
+  sum:"From a Jerusalem upper room to the heart of Rome in one generation. The letters of the New Testament are written along the way, to real churches with real problems.",
+  dn:"Acts’ big beats line up well with Roman history; individual letters’ dates are good-faith approximations.",
+  bp:"book-of-acts", bpl:"Acts overview"}
+];
+/* Node: t (ev/p/bk), e (era id), n (name), d (date), dc (s/t/d/n), b (blurb), r (where to read), bp (slug), w (written-note for books), dn (date note) */
+const NODES_A = [
+/* ── Era 1: Primeval ── */
+ {t:"ev",e:1,n:"Creation",dc:"n",b:"God makes a good, ordered world and gives humans a royal job: bear his image and rule it with him.",r:"Genesis 1–2",bp:"book-of-genesis"},
+ {t:"p",e:1,n:"Adam & Eve",dc:"n",b:"The first humans, placed in Eden to work and keep the garden — and to trust God’s word about good and evil.",r:"Genesis 2–3",bp:"book-of-genesis"},
+ {t:"ev",e:1,n:"The Fall",dc:"n",b:"Humanity grabs the knowledge of good and evil on its own terms. Trust is broken, and exile from the garden follows.",r:"Genesis 3",bp:"book-of-genesis"},
+ {t:"p",e:1,n:"Cain & Abel",dc:"n",b:"The first brothers. Cain’s jealousy becomes the first murder — sin is “crouching at the door,” and it spreads fast.",r:"Genesis 4",bp:"book-of-genesis"},
+ {t:"p",e:1,n:"Noah",dc:"n",b:"A righteous man in a violent generation, chosen to carry humanity and the animals through the flood.",r:"Genesis 6–9",bp:"book-of-genesis"},
+ {t:"ev",e:1,n:"The Flood",dc:"n",b:"God washes a corrupted world and restarts it through Noah’s family — then hangs his bow in the clouds as a promise.",r:"Genesis 6–9",bp:"book-of-genesis"},
+ {t:"ev",e:1,n:"The Tower of Babel",dc:"n",b:"United humanity builds a tower to make its own name great. God scatters them into the very nations he later promises to bless.",r:"Genesis 11",bp:"book-of-genesis"},
+ {t:"bk",e:1,n:"Genesis",dc:"n",b:"The Bible’s launch pad: creation, the fall, the flood, and one family carrying a promise for all nations. Its patterns echo through every later book.",r:"Spans eras 1–2",bp:"book-of-genesis",w:"Traditionally tied to Moses; its stories reach back to Israel’s most ancient memory."},
+
+/* ── Era 2: Patriarchs ── */
+ {t:"p",e:2,n:"Abraham",d:"≈ 2000 BC",dc:"t",b:"The father of the story. God promises him land, a family, and that through him every nation on earth will be blessed.",r:"Genesis 12–25",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"The Call & the Covenant",d:"≈ 2000 BC",dc:"t",b:"“Leave your country… and I will bless you.” God cuts a covenant with Abram — the promise the rest of the Bible spends unpacking.",r:"Genesis 12; 15; 17",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Sarah",dc:"t",b:"Abraham’s wife, who waits decades — and laughs out loud — before Isaac is finally born in her old age.",r:"Genesis 17–23",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Hagar & Ishmael",dc:"t",b:"Sarah’s servant and her son by Abraham, pushed out into the desert — where God sees them and promises Ishmael a future too.",r:"Genesis 16; 21",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Lot",dc:"t",b:"Abraham’s nephew, who pitches his tent toward Sodom and barely escapes what happens there.",r:"Genesis 13; 19",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"Sodom & Gomorrah",dc:"t",b:"Abraham haggles with God over the cities (“what if there are ten righteous?”); in the end only Lot’s family gets out.",r:"Genesis 18–19",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"The Binding of Isaac",dc:"t",b:"Abraham’s hardest test: trusting God with the very son the whole promise depends on. A ram in the thicket takes his place.",r:"Genesis 22",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Isaac",d:"≈ 1900 BC",dc:"t",b:"The long-promised son — a quieter link in the chain between his famous father and his scheming sons.",r:"Genesis 21–28",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Rebekah",dc:"t",b:"Isaac’s wife. Told by God that the older twin will serve the younger, she takes the fulfillment into her own hands.",r:"Genesis 24–27",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Jacob (Israel)",d:"≈ 1850 BC",dc:"t",b:"The heel-grabbing younger twin who cheats, flees, wrestles God, and limps away with a new name: Israel. His twelve sons become the twelve tribes.",r:"Genesis 25–35",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Esau",dc:"t",b:"Jacob’s twin, who trades his birthright for a bowl of stew — and years later, runs to embrace the brother who wronged him.",r:"Genesis 25–33",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Rachel & Leah",dc:"t",b:"Sisters, wives, and rivals. Between them and their servants, the twelve tribes of Israel are born.",r:"Genesis 29–30",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"Jacob Wrestles God",dc:"t",b:"A night-long fight at the river Jabbok. Jacob won’t let go without a blessing, and walks away renamed: “wrestles with God.”",r:"Genesis 32",bp:"book-of-genesis"},
+ {t:"p",e:2,n:"Joseph",d:"≈ 1900–1800 BC",dc:"t",b:"Sold by his brothers, he rises from prison to the right hand of Pharaoh and saves the very family that betrayed him.",r:"Genesis 37–50",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"Joseph Sold into Egypt",dc:"t",b:"Jealousy turns deadly and the brothers sell Joseph to traders. Years later he names the pattern: “You meant evil… God meant it for good.”",r:"Genesis 37; 50",bp:"book-of-genesis"},
+ {t:"ev",e:2,n:"Israel Moves to Egypt",dc:"t",b:"Famine drives Jacob’s whole clan — about seventy people — down to Egypt, where Joseph can feed them. The stage is set for Exodus.",r:"Genesis 46–47",bp:"book-of-genesis"},
+ {t:"bk",e:2,n:"Job",dc:"d",b:"The Bible’s deepest wrestling match with innocent suffering: a blameless man loses everything and demands answers, and God answers with questions.",r:"Job",bp:"book-of-job",w:"Set in patriarch-flavored times; who wrote it and when is genuinely unknown.",dn:"Placed here for its ancient setting, not a known date."},
+
+/* ── Era 3: Exodus & Wilderness ── */
+ {t:"ev",e:3,n:"Israel Enslaved",dc:"d",b:"A new pharaoh “who did not know Joseph” turns the booming family into slave labor and orders their sons drowned.",r:"Exodus 1",bp:"book-of-exodus"},
+ {t:"p",e:3,n:"Moses",dc:"d",b:"Drawn from the Nile, raised in Pharaoh’s palace, exiled as a fugitive — then sent back at eighty to tell Pharaoh, “Let my people go.”",r:"Exodus 2 – Deuteronomy 34",bp:"book-of-exodus"},
+ {t:"p",e:3,n:"Aaron",dc:"d",b:"Moses’ older brother and spokesman, and Israel’s first high priest — gold calf incident notwithstanding.",r:"Exodus 4; 28; 32",bp:"book-of-exodus"},
+ {t:"p",e:3,n:"Miriam",dc:"d",b:"Moses’ sister: the girl who watched the basket in the reeds becomes the prophet who leads Israel’s victory song at the sea.",r:"Exodus 2; 15",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The Burning Bush",dc:"d",b:"God speaks from a bush that burns without burning up, reveals his name — “I AM” — and sends a very reluctant Moses to Egypt.",r:"Exodus 3–4",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The Ten Plagues",dc:"d",b:"Ten escalating blows against Egypt and its gods, from a bloodied Nile to darkness at noon, ending in the night of Passover.",r:"Exodus 7–12",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The First Passover",dc:"d",b:"Lamb’s blood on the doorframes; death passes over. Israel has retold this rescue at the table every year since.",r:"Exodus 12",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"Crossing the Red Sea",dc:"d",b:"The sea opens for Israel and closes over Pharaoh’s army — the Old Testament’s defining picture of rescue.",r:"Exodus 14–15",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"Sinai & the Ten Commandments",dc:"d",b:"At the mountain, God makes a covenant: Israel will be his “kingdom of priests,” a nation shaped by his commands to show the world what he’s like.",r:"Exodus 19–20",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The Golden Calf",dc:"d",b:"Moses is barely up the mountain before Israel breaks the covenant it just made. Moses pleads; God forgives — and reveals his character: “compassionate and gracious, slow to anger.”",r:"Exodus 32–34",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The Tabernacle",dc:"d",b:"A portable tent-temple, built to blueprint, so the Holy One can camp in the middle of his people. The book ends with God’s glory moving in.",r:"Exodus 25–40",bp:"book-of-exodus"},
+ {t:"ev",e:3,n:"The Twelve Spies",dc:"d",b:"Ten scouts spread fear about giants; two — Joshua and Caleb — urge trust. The fearful generation gets forty years to think it over.",r:"Numbers 13–14",bp:"book-of-numbers"},
+ {t:"ev",e:3,n:"Forty Years in the Wilderness",dc:"d",b:"Manna, quail, water from rock, constant grumbling: a whole generation slowly learns (or doesn’t) what daily trust in God looks like.",r:"Numbers",bp:"book-of-numbers"},
+ {t:"ev",e:3,n:"The Bronze Serpent",dc:"d",b:"Bitten by snakes, Israel is healed by looking at a bronze serpent lifted on a pole — an image Jesus later applies to his own cross.",r:"Numbers 21; John 3",bp:"book-of-numbers"},
+ {t:"p",e:3,n:"Balaam",dc:"d",b:"A pagan prophet hired to curse Israel who, despite his best efforts (and a talking donkey), can only manage to bless them.",r:"Numbers 22–24",bp:"book-of-numbers"},
+ {t:"ev",e:3,n:"Moses’ Farewell",dc:"d",b:"On the edge of the land, Moses preaches his heart out — remember, love God, choose life — then climbs a mountain to die within sight of the promise.",r:"Deuteronomy",bp:"book-of-deuteronomy"},
+ {t:"bk",e:3,n:"Exodus",dc:"d",b:"Slavery, rescue, covenant — and a God who moves into the neighborhood. The book the rest of the Old Testament keeps looking back to.",r:"Exodus",bp:"book-of-exodus"},
+ {t:"bk",e:3,n:"Leviticus",dc:"d",b:"A handbook for living next door to a holy God: sacrifices, priests, purity, and the Day of Atonement. Strange at first, rich once you see the logic.",r:"Leviticus",bp:"book-of-leviticus"},
+ {t:"bk",e:3,n:"Numbers",dc:"d",b:"Census lists frame the real story: a forty-year wilderness test of trust, failed and forgiven on repeat.",r:"Numbers",bp:"book-of-numbers"},
+ {t:"bk",e:3,n:"Deuteronomy",dc:"d",b:"Moses’ farewell sermons: the covenant retold and renewed for the generation about to cross over. “Hear, O Israel… love the LORD your God.”",r:"Deuteronomy",bp:"book-of-deuteronomy"},
+
+/* ── Era 4: Conquest ── */
+ {t:"p",e:4,n:"Joshua",dc:"d",b:"Moses’ apprentice, one of the two faithful spies, now leading Israel across the Jordan. His marching orders: “Be strong and courageous.”",r:"Joshua",bp:"book-of-joshua"},
+ {t:"p",e:4,n:"Rahab",dc:"d",b:"A Canaanite woman in Jericho who shelters the spies, joins Israel — and turns up later in Jesus’ family tree.",r:"Joshua 2; Matthew 1",bp:"book-of-joshua"},
+ {t:"ev",e:4,n:"Crossing the Jordan",dc:"d",b:"The river stops at flood stage, echoing the Red Sea: the new generation gets a crossing of its own, and stacks twelve stones to remember it.",r:"Joshua 3–4",bp:"book-of-joshua"},
+ {t:"ev",e:4,n:"The Fall of Jericho",dc:"d",b:"Seven days of silent marching, a trumpet blast, a shout — and the walls collapse. The conquest opens with worship, not siegecraft.",r:"Joshua 6",bp:"book-of-joshua"},
+ {t:"p",e:4,n:"Caleb",dc:"d",b:"The other faithful spy. Forty-five years later he’s still asking for the hill country: “Give me this mountain.”",r:"Joshua 14",bp:"book-of-joshua"},
+ {t:"ev",e:4,n:"The Land Divided",dc:"d",b:"The land is allotted tribe by tribe — Abraham’s promise drawn onto an actual map — and the covenant is renewed at Shechem.",r:"Joshua 13–24",bp:"book-of-joshua"},
+ {t:"bk",e:4,n:"Joshua",dc:"d",b:"Crossing in, taking the land, dividing it up, and a closing choice: “Choose this day whom you will serve.”",r:"Joshua",bp:"book-of-joshua"},
+
+/* ── Era 5: Judges ── */
+ {t:"ev",e:5,n:"The Cycle of the Judges",d:"≈ 1350–1050 BC",dc:"t",b:"Israel forgets God → trouble comes → Israel cries out → God raises a rescuer → peace → forget again. Each loop spirals lower.",r:"Judges 2",bp:"book-of-judges"},
+ {t:"p",e:5,n:"The Early Judges",dc:"t",b:"Othniel, left-handed Ehud (and his concealed sword), Shamgar and his ox-goad — the first rescuers in the cycle.",r:"Judges 3",bp:"book-of-judges"},
+ {t:"p",e:5,n:"Deborah",dc:"t",b:"Prophet, judge, and the nerve behind Israel’s victory over a Canaanite war machine — with Barak leading and Jael finishing the job.",r:"Judges 4–5",bp:"book-of-judges"},
+ {t:"p",e:5,n:"Gideon",dc:"t",b:"A farmer threshing wheat in hiding becomes a reluctant general; God shrinks his army to 300 so no one can take the credit.",r:"Judges 6–8",bp:"book-of-judges"},
+ {t:"p",e:5,n:"Jephthah",dc:"t",b:"An outcast called back to deliver Israel from Ammon — who wins, but pays terribly for a rash vow.",r:"Judges 11",bp:"book-of-judges"},
+ {t:"p",e:5,n:"Samson",dc:"t",b:"A one-man army with supernatural strength, fatal weaknesses, and a costly final victory in the dark.",r:"Judges 13–16",bp:"book-of-judges"},
+ {t:"p",e:5,n:"Ruth",dc:"t",b:"A Moabite widow whose stubborn loyalty — “where you go, I will go” — carries her into Israel’s story and King David’s family line.",r:"Ruth",bp:"book-of-ruth"},
+ {t:"p",e:5,n:"Naomi & Boaz",dc:"t",b:"A grieving mother-in-law and a kind landowner (the “kinsman-redeemer”) whose quiet faithfulness rebuilds a shattered family.",r:"Ruth 1–4",bp:"book-of-ruth"},
+ {t:"p",e:5,n:"Eli",d:"≈ 1100 BC",dc:"t",b:"The aging priest at Shiloh who raises little Samuel — but can’t rein in his own corrupt sons.",r:"1 Samuel 1–4",bp:"books-of-samuel"},
+ {t:"p",e:5,n:"Samuel",d:"≈ 1100–1010 BC",dc:"t",b:"The boy who heard God in the night becomes the last judge and the first great prophet since Moses — kingmaker to Saul and David both.",r:"1 Samuel 1–16",bp:"books-of-samuel"},
+ {t:"ev",e:5,n:"The Ark Captured",dc:"t",b:"The Philistines seize the ark in battle — and after plagues and a toppled idol, can’t return it fast enough.",r:"1 Samuel 4–6",bp:"books-of-samuel"},
+ {t:"bk",e:5,n:"Judges",dc:"t",b:"Israel’s dark age, unflinchingly told. The refrain says it all: “In those days Israel had no king; everyone did what was right in their own eyes.”",r:"Judges",bp:"book-of-judges"},
+ {t:"bk",e:5,n:"Ruth",dc:"t",b:"A small, beautiful story of loyalty and redemption tucked inside the chaos of Judges — ending, surprisingly, with David’s name.",r:"Ruth",bp:"book-of-ruth"},
+
+/* ── Era 6: United Kingdom ── */
+ {t:"ev",e:6,n:"Israel Demands a King",d:"≈ 1050 BC",dc:"t",b:"“Give us a king like the nations.” God grants it — through Samuel, with a sober warning about everything kings take.",r:"1 Samuel 8",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"Saul",d:"≈ 1050–1010 BC",dc:"t",b:"Israel’s first king: head and shoulders above everyone, and slowly unraveled by fear, jealousy, and half-obedience.",r:"1 Samuel 9–31",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"Jonathan",dc:"t",b:"Saul’s son and David’s covenant friend — heir to a throne he gladly hands to the man he loves like a brother.",r:"1 Samuel 18–20",bp:"books-of-samuel"},
+ {t:"ev",e:6,n:"David & Goliath",dc:"t",b:"A shepherd boy with a sling and five stones fells the Philistine champion. Trust in God beats armor and odds.",r:"1 Samuel 17",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"David",d:"≈ 1010–970 BC",dc:"t",b:"Shepherd, giant-slayer, fugitive, king, poet — “a man after God’s own heart” who also fails spectacularly. An ancient inscription from Tel Dan mentions his dynasty, the “house of David.”",r:"1–2 Samuel",bp:"books-of-samuel"},
+ {t:"ev",e:6,n:"David Becomes King",d:"≈ 1010 BC",dc:"t",b:"After years on the run from Saul, David is crowned — first over Judah, then all Israel — and takes Jerusalem as his capital.",r:"2 Samuel 2–5",bp:"books-of-samuel"},
+ {t:"ev",e:6,n:"The Ark Comes to Jerusalem",dc:"t",b:"David dances the ark up to his new capital with all his might. Worship now has an address: Zion.",r:"2 Samuel 6",bp:"books-of-samuel"},
+ {t:"ev",e:6,n:"God’s Covenant with David",dc:"t",b:"God promises David a “house” — a dynasty forever. From here on, the whole Bible watches for the coming Son of David. (That’s what “Messiah” is about.)",r:"2 Samuel 7",bp:"books-of-samuel"},
+ {t:"ev",e:6,n:"David & Bathsheba",dc:"t",b:"Power abused: adultery, a murdered husband, and a prophet’s trap — “You are the man.” Psalm 51 is David’s broken response.",r:"2 Samuel 11–12 · Psalm 51",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"Nathan",dc:"t",b:"The prophet brave enough to walk into the throne room and confront the king with a story — and the truth.",r:"2 Samuel 7; 12",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"Absalom",dc:"t",b:"David’s charming, vengeful son, whose rebellion nearly takes the throne — and whose death breaks his father: “O Absalom, my son, my son!”",r:"2 Samuel 15–18",bp:"books-of-samuel"},
+ {t:"p",e:6,n:"Solomon",d:"≈ 970–930 BC",dc:"t",b:"David’s son: legendary wisdom, the temple, staggering wealth — and a heart pulled away, one political marriage at a time.",r:"1 Kings 1–11",bp:"books-of-kings"},
+ {t:"ev",e:6,n:"Solomon Builds the Temple",d:"≈ 966 BC",dc:"t",b:"The portable tent becomes a house of cedar and gold, and God’s glory fills it — the high-water mark of Israel’s story.",r:"1 Kings 6–8",bp:"books-of-kings"},
+ {t:"bk",e:6,n:"1 & 2 Samuel",dc:"t",b:"One sweeping story (split in two for scroll length): the last judge, the first king, and the rise of David.",r:"1–2 Samuel",bp:"books-of-samuel"},
+ {t:"bk",e:6,n:"Psalms",dc:"t",b:"Israel’s prayer book: 150 songs of praise, protest, fury, and trust. Many are tied to David; together they teach you to pray honestly.",r:"Psalms",bp:"book-of-psalms",w:"Collected over many centuries; the book got its final five-part shape after the exile."},
+ {t:"bk",e:6,n:"Proverbs",dc:"t",b:"Wisdom for ordinary Tuesdays — money, words, work, friendship — much of it associated with Solomon. “The fear of the LORD is the beginning of wisdom.”",r:"Proverbs",bp:"book-of-proverbs",w:"A collection built up over generations of Israel’s sages."},
+ {t:"bk",e:6,n:"Ecclesiastes",dc:"t",b:"Wisdom’s hard questions: if everything is fleeting “vapor,” how do you live well? Bracingly honest, strangely comforting.",r:"Ecclesiastes",bp:"book-of-ecclesiastes",w:"Linked to Solomon by its opening line; its actual date is debated."},
+ {t:"bk",e:6,n:"Song of Songs",dc:"t",b:"Unblushing love poetry — desire, delight, and devotion as part of God’s good world. Wisdom for the heart.",r:"Song of Songs",bp:"book-of-song-of-songs",w:"Associated with Solomon; date uncertain."}
+];
+const NODES_B = [
+/* ── Era 7: Divided Kingdom ── */
+ {t:"ev",e:7,n:"The Kingdom Splits",d:"930 BC",dc:"s",b:"After Solomon, ten northern tribes break away as “Israel”; the south stays with David’s line as “Judah.” One people, two kingdoms, double trouble.",r:"1 Kings 12",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Rehoboam",d:"930–913 BC",dc:"s",b:"Solomon’s son, whose tough-guy answer (“my little finger is thicker than my father’s waist”) splits the nation. First king of Judah alone.",r:"1 Kings 12; 14",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Jeroboam I",d:"930–909 BC",dc:"s",b:"First king of the north. He sets up golden calves at Dan and Bethel so his people won’t worship in Jerusalem — the sin every northern king repeats.",r:"1 Kings 12–14",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Ahab & Jezebel",d:"≈ 874–853 BC",dc:"s",b:"The north’s most infamous royal couple, who make Baal worship official policy and prophet-killing a hobby.",r:"1 Kings 16–22",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Elijah",d:"≈ 870–850 BC",dc:"t",b:"The fire-and-drought prophet who confronts Ahab, hears God in a whisper at Horeb, and exits history in a whirlwind.",r:"1 Kings 17 – 2 Kings 2",bp:"books-of-kings"},
+ {t:"ev",e:7,n:"Showdown on Mount Carmel",d:"≈ 860 BC",dc:"t",b:"One prophet against 450 prophets of Baal: “The god who answers by fire — he is God.” Fire falls, and Israel falls on its face.",r:"1 Kings 18",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Elisha",d:"≈ 850–800 BC",dc:"t",b:"Elijah’s successor, with a double portion of his spirit: floating axe heads, healed generals, multiplied oil — grace in miracle form.",r:"2 Kings 2–13",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Jehu",d:"≈ 841 BC",dc:"s",b:"The general who “drives like a maniac,” wipes out Ahab’s dynasty and Baal’s temple — and then stalls halfway to real reform.",r:"2 Kings 9–10",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Jeroboam II",d:"≈ 790–750 BC",dc:"s",b:"Under his long reign the north booms — big borders, big money — while Amos and Hosea call out the rot underneath.",r:"2 Kings 14",bp:"books-of-kings"},
+ {t:"bk",e:7,n:"Jonah",d:"≈ 780 BC",dc:"d",b:"The runaway prophet, the great fish, and the enemy city he didn’t want forgiven. The only prophetic book that’s mostly story — and it ends on a question.",r:"Jonah",bp:"book-of-jonah",w:"Set in the 700s BC; when it was written down is debated."},
+ {t:"bk",e:7,n:"Amos",d:"≈ 760 BC",dc:"t",b:"A shepherd sent north with a blunt message: religious performances can’t cover up injustice. “Let justice roll on like a river.”",r:"Amos",bp:"book-of-amos"},
+ {t:"bk",e:7,n:"Hosea",d:"≈ 755–715 BC",dc:"t",b:"The prophet whose own broken marriage becomes a living picture of God’s heartbreak over unfaithful Israel — and his refusal to give her up.",r:"Hosea",bp:"book-of-hosea"},
+ {t:"p",e:7,n:"Uzziah",d:"≈ 790–740 BC",dc:"s",b:"Judah’s long-reigning builder-king, struck with leprosy for pride in the temple. Isaiah’s call comes “in the year King Uzziah died.”",r:"2 Chronicles 26 · Isaiah 6",bp:"books-of-chronicles"},
+ {t:"bk",e:7,n:"Isaiah",d:"≈ 740–680 BC",dc:"t",b:"The towering prophet of Judah: searing judgment and breathtaking hope — a virgin’s son, a suffering servant, a new creation. The Gospel writers quote him constantly.",r:"Isaiah",bp:"book-of-isaiah"},
+ {t:"bk",e:7,n:"Micah",d:"≈ 735–700 BC",dc:"t",b:"Isaiah’s small-town contemporary: judgment on corrupt leaders, a ruler promised from little Bethlehem, and the famous summary — “act justly, love mercy, walk humbly.”",r:"Micah",bp:"book-of-micah"},
+ {t:"ev",e:7,n:"Assyria Destroys Israel",d:"722 BC",dc:"s",b:"The northern kingdom falls to Assyria; its people are deported and scattered, never to return as a nation. Only Judah remains.",r:"2 Kings 17",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Hezekiah",d:"≈ 715–686 BC",dc:"s",b:"Judah’s great reformer, who tears down idols, digs a still-visible water tunnel, and stakes Jerusalem’s survival on prayer.",r:"2 Kings 18–20",bp:"books-of-kings"},
+ {t:"ev",e:7,n:"Sennacherib’s Siege",d:"701 BC",dc:"s",b:"Assyria swallows Judah’s cities, but Jerusalem is spared overnight — an event Assyria’s own royal records also describe (with conspicuous spin).",r:"2 Kings 18–19 · Isaiah 36–37",bp:"book-of-isaiah"},
+ {t:"p",e:7,n:"Manasseh",d:"≈ 686–642 BC",dc:"s",b:"Judah’s longest-reigning and, per Kings, worst king — child sacrifice, idols in the temple. Chronicles adds a late-life repentance.",r:"2 Kings 21 · 2 Chronicles 33",bp:"books-of-kings"},
+ {t:"p",e:7,n:"Josiah",d:"640–609 BC",dc:"s",b:"Crowned at eight. His renovation crew finds the lost Book of the Law, and the young king tears his robes — then tears down every idol in the land.",r:"2 Kings 22–23",bp:"books-of-kings"},
+ {t:"ev",e:7,n:"Josiah’s Reform",d:"622 BC",dc:"s",b:"Idols smashed, Passover restored, covenant renewed — Judah’s last great turning back, a bright flare before the dark.",r:"2 Kings 23",bp:"books-of-kings"},
+ {t:"bk",e:7,n:"Zephaniah",d:"≈ 630 BC",dc:"t",b:"In Josiah’s days: the Day of the LORD is near — darkness for the proud, and at the end, God “rejoicing over you with singing.”",r:"Zephaniah",bp:"book-of-zephaniah"},
+ {t:"bk",e:7,n:"Nahum",d:"≈ 650–612 BC",dc:"t",b:"A funeral poem for Nineveh, capital of cruel Assyria. The empire that erased Israel gets its own notice of demolition.",r:"Nahum",bp:"book-of-nahum"},
+ {t:"bk",e:7,n:"Habakkuk",d:"≈ 605 BC",dc:"t",b:"A prophet argues with God — “why do you tolerate wrong?” — and learns to wait and trust. “The righteous shall live by faith” starts here.",r:"Habakkuk",bp:"book-of-habakkuk"},
+ {t:"bk",e:7,n:"Jeremiah",d:"≈ 627–580 BC",dc:"t",b:"The weeping prophet: forty years telling Judah what it refuses to hear — Babylon is coming — plus a stunning promise of a “new covenant” written on hearts.",r:"Jeremiah",bp:"book-of-jeremiah"},
+ {t:"bk",e:7,n:"Joel",dc:"d",b:"A locust plague becomes a window into the Day of the LORD — and a promise Peter quotes at Pentecost: “I will pour out my Spirit on all people.”",r:"Joel",bp:"book-of-joel",w:"Honestly undatable — proposals range across four centuries. Placed here by its traditional spot among the prophets.",dn:"Date unknown; scholars’ guesses span the 800s–400s BC."},
+ {t:"ev",e:7,n:"Babylon Rises",d:"605 BC",dc:"s",b:"Babylon crushes Egypt’s army at Carchemish and inherits the Near East. Judah changes masters, and the first captives — Daniel among them — go east.",r:"2 Kings 24 · Daniel 1",bp:"book-of-daniel"},
+ {t:"p",e:7,n:"Zedekiah",d:"597–586 BC",dc:"s",b:"Judah’s last king — installed by Babylon, talked into rebellion, and made to watch the consequences before losing his sight.",r:"2 Kings 24–25 · Jeremiah 38",bp:"books-of-kings"},
+ {t:"ev",e:7,n:"Jerusalem Falls",d:"586 BC",dc:"s",b:"Babylon breaches the walls, burns the city, and razes Solomon’s temple. The unthinkable happens, and the exile begins in earnest.",r:"2 Kings 25",bp:"books-of-kings"},
+ {t:"bk",e:7,n:"1 & 2 Kings",dc:"s",b:"The whole royal story from Solomon to the exile — written less as a chronicle than as a prophetic autopsy: how did we lose it all?",r:"1–2 Kings",bp:"books-of-kings",w:"Reached its final form during the exile, looking back."},
+ {t:"bk",e:7,n:"1 & 2 Chronicles",dc:"s",b:"The same centuries retold for the returned exiles — spotlighting David’s line, the temple, and the hope that the story isn’t over.",r:"1–2 Chronicles",bp:"books-of-chronicles",w:"Written after the return, around the 400s BC — the Hebrew Bible’s closing book."},
+
+/* ── Era 8: Exile ── */
+ {t:"p",e:8,n:"Nebuchadnezzar",d:"605–562 BC",dc:"s",b:"Babylon’s empire-building king — conqueror of Jerusalem, builder of legendary gardens, and a recurring student in Daniel’s school of humility.",r:"Daniel 1–4",bp:"book-of-daniel"},
+ {t:"p",e:8,n:"Daniel",d:"605–≈536 BC",dc:"t",b:"Deported as a teenager, he serves pagan empires for seventy years — top of the class, clean hands, windows open toward Jerusalem.",r:"Daniel",bp:"book-of-daniel"},
+ {t:"p",e:8,n:"Shadrach, Meshach & Abednego",dc:"t",b:"Daniel’s three friends, who tell the king their God can save them from the furnace — “but even if he does not, we will not bow.”",r:"Daniel 3",bp:"book-of-daniel"},
+ {t:"ev",e:8,n:"The Fiery Furnace",dc:"t",b:"Three go in; four are seen walking in the flames. They come out without even the smell of smoke.",r:"Daniel 3",bp:"book-of-daniel"},
+ {t:"bk",e:8,n:"Lamentations",d:"≈ 586 BC",dc:"s",b:"Five raw funeral poems over Jerusalem’s ashes — grief given structure. Buried in the middle: “Great is your faithfulness.”",r:"Lamentations",bp:"book-of-lamentations"},
+ {t:"bk",e:8,n:"Obadiah",d:"≈ 586 BC",dc:"d",b:"The Old Testament’s shortest book: one hot chapter against Edom for cheering — and looting — while Jerusalem burned.",r:"Obadiah",bp:"book-of-obadiah",w:"Most likely right after 586 BC, though the date is debated."},
+ {t:"bk",e:8,n:"Ezekiel",d:"593–571 BC",dc:"s",b:"A priest-prophet among the exiles with the Bible’s wildest visions: God’s glory leaves the temple on a wheeled throne — and promises to return to a valley of revived dry bones.",r:"Ezekiel",bp:"book-of-ezekiel"},
+ {t:"ev",e:8,n:"Belshazzar’s Feast",d:"539 BC",dc:"s",b:"A drunken party with the temple’s stolen cups, interrupted by a hand writing on the wall. Babylon falls that very night.",r:"Daniel 5",bp:"book-of-daniel"},
+ {t:"ev",e:8,n:"Babylon Falls to Persia",d:"539 BC",dc:"s",b:"Cyrus takes Babylon almost without a fight. The empire that destroyed Jerusalem is itself toppled — exactly the kind of reversal the prophets promised.",r:"Daniel 5 · Isaiah 45",bp:"book-of-daniel"},
+ {t:"ev",e:8,n:"Daniel in the Lions’ Den",d:"≈ 539 BC",dc:"t",b:"An old man, a flattering law, and a night with the lions. The mouths stay shut; the schemers don’t.",r:"Daniel 6",bp:"book-of-daniel"},
+ {t:"bk",e:8,n:"Daniel",dc:"d",b:"Court tales and apocalyptic visions: how to stay faithful — and hopeful — inside Babylon. Empires rise and fall; God’s kingdom doesn’t.",r:"Daniel",bp:"book-of-daniel",w:"Set in the exile; scholars debate when it reached its final written form."},
+
+/* ── Era 9: Return & Rebuilding ── */
+ {t:"p",e:9,n:"Cyrus the Great",d:"539–530 BC",dc:"s",b:"The Persian king who sends exiles home — named in Isaiah, and famous from his own clay cylinder describing his policy of restoring displaced peoples.",r:"Ezra 1 · Isaiah 44–45",bp:"book-of-ezra-nehemiah"},
+ {t:"ev",e:9,n:"The Decree of Cyrus",d:"538 BC",dc:"s",b:"“Let them go up and rebuild.” The first wave of exiles heads home to a ruined Jerusalem — seventy years after the first deportation, as Jeremiah said.",r:"Ezra 1–2",bp:"book-of-ezra-nehemiah"},
+ {t:"p",e:9,n:"Zerubbabel",d:"≈ 538–516 BC",dc:"s",b:"Governor of David’s line who leads the first return, rebuilds the altar, and — after a long stall — finishes the temple.",r:"Ezra 3–6 · Haggai",bp:"book-of-ezra-nehemiah"},
+ {t:"bk",e:9,n:"Haggai",d:"520 BC",dc:"s",b:"Four precisely dated sermons with one point: you’ve paneled your own houses while God’s house lies in ruins. The people actually listen — rare for a prophet!",r:"Haggai",bp:"book-of-haggai"},
+ {t:"bk",e:9,n:"Zechariah",d:"520–518 BC",dc:"s",b:"Trippy night visions and a promised king — “righteous and victorious, lowly and riding on a donkey.” The Gospels quote him all through Holy Week.",r:"Zechariah",bp:"book-of-zechariah"},
+ {t:"ev",e:9,n:"The Second Temple Finished",d:"516 BC",dc:"s",b:"Seventy years after its destruction, a temple stands again — humbler than Solomon’s, so the old men weep while the young men cheer.",r:"Ezra 6",bp:"book-of-ezra-nehemiah"},
+ {t:"p",e:9,n:"Esther",d:"≈ 480s BC",dc:"s",b:"A Jewish orphan who becomes queen of Persia and risks everything — “if I perish, I perish” — when her people are marked for genocide.",r:"Esther",bp:"book-of-esther"},
+ {t:"p",e:9,n:"Mordecai",dc:"s",b:"Esther’s cousin and coach, whose refusal to bow to Haman sets the whole plot in motion: “for such a time as this.”",r:"Esther",bp:"book-of-esther"},
+ {t:"ev",e:9,n:"Esther Saves Her People",d:"≈ 473 BC",dc:"t",b:"Haman’s decree is flipped on its head and the hangman swings from his own gallows. The feast of Purim celebrates it to this day.",r:"Esther 7–9",bp:"book-of-esther"},
+ {t:"p",e:9,n:"Ezra",d:"458 BC",dc:"s",b:"Priest and scribe who leads a second return and rebuilds something harder than walls: a people shaped around the Torah.",r:"Ezra 7–10",bp:"book-of-ezra-nehemiah"},
+ {t:"p",e:9,n:"Nehemiah",d:"445 BC",dc:"s",b:"The Persian king’s cupbearer who gets leave to rebuild Jerusalem’s walls — and does it in fifty-two days, trowel in one hand, spear in the other.",r:"Nehemiah",bp:"book-of-ezra-nehemiah"},
+ {t:"ev",e:9,n:"The Walls Rebuilt & the Law Read",d:"445 BC",dc:"s",b:"Walls finished, gates hung, and all the people gathered as Ezra reads the Law aloud from daybreak till noon. The Old Testament story’s closing scene.",r:"Nehemiah 6–9",bp:"book-of-ezra-nehemiah"},
+ {t:"bk",e:9,n:"Ezra–Nehemiah",dc:"s",b:"Going home is harder than it sounds: rebuilding a temple, a wall, and a people — through opposition, compromise, and fresh starts.",r:"Ezra · Nehemiah",bp:"book-of-ezra-nehemiah"},
+ {t:"bk",e:9,n:"Esther",dc:"s",b:"The book where God is never named — and his fingerprints are on every page. Comedy, menace, and a queen’s costly courage.",r:"Esther",bp:"book-of-esther"},
+ {t:"bk",e:9,n:"Malachi",d:"≈ 430 BC",dc:"t",b:"The Old Testament’s last word: hard questions for a half-hearted people, and a promise — a messenger is coming to prepare the way. Then, silence.",r:"Malachi",bp:"book-of-malachi"}
+];
+const NODES_C = [
+/* ── Era 10: Between the Testaments ── */
+ {t:"ev",e:10,n:"Alexander Conquers the East",d:"332 BC",dc:"s",b:"Greek armies — and the Greek language — sweep the region. It’s why the New Testament is written in Greek, and why “Christ” is a Greek word.",bp:""},
+ {t:"ev",e:10,n:"The Septuagint",d:"≈ 250 BC",dc:"t",b:"In Alexandria, the Hebrew Bible is translated into Greek. When New Testament writers quote Scripture, this is usually the version they’re quoting.",bp:""},
+ {t:"ev",e:10,n:"The Maccabean Revolt",d:"167–160 BC",dc:"s",b:"A Greek king bans Torah and desecrates the temple; a priestly family fights back and wins. The temple’s rededication is still celebrated as Hanukkah.",bp:""},
+ {t:"p",e:10,n:"Judas Maccabeus",d:"≈ 166–160 BC",dc:"s",b:"“The Hammer” — guerrilla leader of the revolt and folk hero of the era. (His story is told in 1–2 Maccabees, included in some Bibles.)",bp:""},
+ {t:"ev",e:10,n:"Rome Takes Judea",d:"63 BC",dc:"s",b:"The Roman general Pompey marches into Jerusalem. Governors, legions, taxes, crosses — the political world of the Gospels arrives.",bp:""},
+ {t:"p",e:10,n:"Herod the Great",d:"37–4 BC",dc:"s",b:"Rome’s client king of Judea: master builder (the temple’s spectacular expansion) and paranoid killer — the Bethlehem massacre fits his well-documented pattern.",bp:""},
+ {t:"ev",e:10,n:"The Gospel-Era Groups Form",dc:"t",dn:"These groups took shape gradually across the last two centuries BC.",b:"Pharisees, Sadducees, Essenes, Samaritans — every party Jesus will debate, dine with, or be tried by takes shape in these centuries.",bp:""},
+
+/* ── Era 11: Jesus ── */
+ {t:"ev",e:11,n:"The Birth of Jesus",d:"≈ 6–4 BC",dc:"d",dn:"Yes, “before Christ” — a sixth-century monk’s calendar math came out a few years off.",b:"Born in Bethlehem under Caesar Augustus, laid in a feeding trough, announced to shepherds. The story’s center begins at the margins.",r:"Matthew 1–2 · Luke 1–2",bp:"book-of-luke"},
+ {t:"p",e:11,n:"Mary",dc:"t",b:"A young woman from Nazareth who says yes — “let it be to me according to your word” — and treasures it all in her heart.",r:"Luke 1–2",bp:"book-of-luke"},
+ {t:"p",e:11,n:"Joseph of Nazareth",dc:"t",b:"The carpenter who believes the angel, marries her anyway, and raises Jesus as his own.",r:"Matthew 1–2",bp:"book-of-matthew"},
+ {t:"ev",e:11,n:"The Magi & the Flight to Egypt",d:"≈ 4 BC",dc:"t",b:"Foreign stargazers travel far to honor the child king; Herod’s rage drives the family to Egypt as refugees.",r:"Matthew 2",bp:"book-of-matthew"},
+ {t:"p",e:11,n:"John the Baptist",d:"≈ AD 27–29",dc:"t",b:"The camel-hair prophet at the Jordan — “prepare the way” — who baptizes Jesus and later loses his head for confronting a king.",r:"Matthew 3 · Mark 6",bp:"book-of-mark"},
+ {t:"ev",e:11,n:"Jesus’ Baptism",d:"≈ AD 27–29",dc:"d",dn:"Luke pins John’s ministry to Tiberius’ fifteenth year — about AD 28–29.",b:"The Spirit descends like a dove, the Father speaks — “my beloved Son” — and the public ministry begins.",r:"Matthew 3 · Mark 1",bp:"book-of-mark"},
+ {t:"ev",e:11,n:"The Temptation",dc:"t",b:"Forty days hungry in the wilderness. Where Adam and Israel failed their tests, Jesus passes his.",r:"Matthew 4 · Luke 4",bp:"book-of-matthew"},
+ {t:"ev",e:11,n:"Calling the Twelve",dc:"t",b:"Fishermen, a tax collector, a zealot — a walking, arguing, new-Israel-in-miniature.",r:"Mark 1–3",bp:"book-of-mark"},
+ {t:"p",e:11,n:"Peter",dc:"t",b:"The lead disciple — bold, impulsive, water-walking, Messiah-confessing, rooster-crowing — restored on a beach and remade into the early church’s front man.",r:"The Gospels · Acts 1–12",bp:"book-of-mark"},
+ {t:"p",e:11,n:"James & John",dc:"t",b:"The fisherman brothers Jesus nicknames “sons of thunder”; with Peter, his inner circle.",r:"Mark 1; 3; 9",bp:"book-of-mark"},
+ {t:"p",e:11,n:"Mary Magdalene",dc:"t",b:"Delivered from seven demons, she helps fund the movement, stays through the cross, and becomes the first witness of the resurrection.",r:"Luke 8 · John 20",bp:"book-of-john"},
+ {t:"ev",e:11,n:"The Sermon on the Mount",dc:"t",b:"The kingdom’s manifesto: blessed are the poor in spirit, love your enemies, build your house on rock.",r:"Matthew 5–7",bp:"book-of-matthew"},
+ {t:"ev",e:11,n:"Miracles & Parables",dc:"t",b:"Storms hushed, lepers cleansed, demons evicted — and stories about seeds, sheep, and sons that hide the kingdom in plain sight.",r:"Throughout the Gospels",bp:"book-of-mark"},
+ {t:"p",e:11,n:"Nicodemus",dc:"t",b:"A Pharisee who comes by night and hears the famous line: “you must be born again.” He resurfaces at the burial — in daylight.",r:"John 3; 19",bp:"book-of-john"},
+ {t:"ev",e:11,n:"Feeding the Five Thousand",dc:"t",b:"Five loaves, two fish, twelve baskets left over — the only miracle before the resurrection told in all four Gospels.",r:"John 6",bp:"book-of-john"},
+ {t:"p",e:11,n:"Martha, Mary & Lazarus",dc:"t",b:"Jesus’ close friends in Bethany — the busy hostess, the listener at his feet, and the brother he weeps for.",r:"Luke 10 · John 11",bp:"book-of-john"},
+ {t:"ev",e:11,n:"Peter’s Confession",dc:"t",b:"“You are the Messiah.” From this hinge, Jesus turns toward Jerusalem — and starts talking about a cross.",r:"Matthew 16",bp:"book-of-matthew"},
+ {t:"ev",e:11,n:"The Transfiguration",dc:"t",b:"On a mountain, three disciples glimpse Jesus blazing with glory, flanked by Moses and Elijah — the Law and the Prophets pointing at him.",r:"Mark 9",bp:"book-of-mark"},
+ {t:"ev",e:11,n:"The Raising of Lazarus",dc:"t",b:"“I am the resurrection and the life” — then a four-days-dead man walks out of his tomb. The act that seals the plot against Jesus.",r:"John 11",bp:"book-of-john"},
+ {t:"ev",e:11,n:"The Triumphal Entry",d:"AD 30 or 33",dc:"d",b:"Zechariah’s king arrives lowly, riding on a donkey, while crowds wave palms and shout “Hosanna!” Palm Sunday.",r:"Matthew 21 · Zechariah 9",bp:"book-of-matthew"},
+ {t:"ev",e:11,n:"The Last Supper",dc:"t",b:"Passover reframed around himself: “this is my body… this is my blood of the covenant.”",r:"Luke 22",bp:"book-of-luke"},
+ {t:"p",e:11,n:"Judas Iscariot",dc:"t",b:"The disciple who sells his teacher for thirty pieces of silver — and can’t live with what he’s done.",r:"Matthew 26–27",bp:"book-of-matthew"},
+ {t:"p",e:11,n:"Caiaphas",dc:"t",b:"The high priest who engineers the arrest: “better that one man die for the people.”",r:"John 11; 18",bp:"book-of-john"},
+ {t:"p",e:11,n:"Pontius Pilate",d:"AD 26–36",dc:"s",b:"The Roman governor who declares Jesus innocent three times — and crucifies him anyway. (A stone found at Caesarea bears Pilate’s name and title.)",r:"John 18–19",bp:"book-of-john"},
+ {t:"ev",e:11,n:"The Crucifixion",d:"AD 30 or 33",dc:"d",dn:"Both years fit the evidence; scholars split between them.",b:"Executed between criminals under a mocking sign — “King of the Jews.” The Bible’s center of gravity: the King dies for his enemies.",r:"Matthew 27 · Mark 15 · Luke 23 · John 19",bp:"book-of-luke"},
+ {t:"ev",e:11,n:"The Resurrection",d:"AD 30 or 33",dc:"d",b:"The stone rolled away, the tomb empty, the risen Jesus appearing — to the women first, then the Twelve, then crowds. Everything in the New Testament flows from this.",r:"Matthew 28 · John 20–21 · 1 Corinthians 15",bp:"book-of-john"},
+ {t:"ev",e:11,n:"The Great Commission & Ascension",dc:"t",b:"“Go and make disciples of all nations…” — then he ascends, promising the Spirit and his own return.",r:"Matthew 28 · Acts 1",bp:"book-of-matthew"},
+ {t:"bk",e:11,n:"Matthew",dc:"t",b:"Jesus as Israel’s Messiah — the whole Old Testament story arriving at its goal. Five big teaching blocks echo the five books of Moses.",r:"Matthew",bp:"book-of-matthew",w:"Written ≈ AD 60s–80s, decades after the events."},
+ {t:"bk",e:11,n:"Mark",dc:"t",b:"The shortest, fastest Gospel — “immediately” is its favorite word — about the suffering Son of God on the move.",r:"Mark",bp:"book-of-mark",w:"Likely the earliest Gospel, ≈ AD 60s; tradition ties it to Peter’s memories."},
+ {t:"bk",e:11,n:"Luke",dc:"t",b:"A careful historian’s Gospel (“I investigated everything from the beginning”) with special eyes for outsiders, women, and the poor.",r:"Luke",bp:"book-of-luke",w:"Written ≈ AD 60s–80s; volume one of Luke–Acts."},
+ {t:"bk",e:11,n:"John",dc:"t",b:"The reflective Gospel — seven signs, seven “I AM” sayings — written “that you may believe.”",r:"John",bp:"book-of-john",w:"Written ≈ AD 80s–90s, the latest of the four."},
+
+/* ── Era 12: The Early Church ── */
+ {t:"ev",e:12,n:"Pentecost",d:"AD 30/33",dc:"d",b:"Wind, fire, and a dozen languages at a harvest festival. Peter preaches, three thousand believe — the church is born.",r:"Acts 2",bp:"book-of-acts"},
+ {t:"ev",e:12,n:"Life of the First Church",dc:"t",b:"Shared meals, shared money, prayer, and daily additions — the Jerusalem community figures out life together.",r:"Acts 2–4",bp:"book-of-acts"},
+ {t:"bk",e:12,n:"Acts",dc:"s",b:"Volume two of Luke: from a Jerusalem upper room to the heart of Rome in about thirty years.",r:"Spans ≈ AD 30–62",bp:"book-of-acts",w:"Ends abruptly with Paul in Rome (≈ AD 62); written sometime after."},
+ {t:"p",e:12,n:"Stephen",d:"≈ AD 34",dc:"t",b:"The first martyr — full of grace and power, stoned while echoing Jesus: “do not hold this sin against them.” A young Saul holds the coats.",r:"Acts 6–7",bp:"book-of-acts"},
+ {t:"ev",e:12,n:"The Church Scatters",dc:"t",b:"Persecution backfires: believers scatter from Jerusalem, and the message travels with them.",r:"Acts 8",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Philip the Evangelist",dc:"t",b:"Takes the good news to Samaria, then explains Isaiah 53 to an Ethiopian official in a chariot — the gospel’s first ride toward Africa.",r:"Acts 8",bp:"book-of-acts"},
+ {t:"ev",e:12,n:"Paul’s Conversion",d:"≈ AD 33–35",dc:"t",b:"The church’s fiercest enemy is knocked flat on the Damascus road by the risen Jesus — and switches sides.",r:"Acts 9",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Paul",d:"≈ AD 5–67",dc:"t",b:"Pharisee turned apostle to the nations: three missionary journeys, at least thirteen letters, shipwrecks and prisons — and, by strong tradition, execution under Nero.",r:"Acts 9–28 · his letters",bp:"book-of-acts"},
+ {t:"ev",e:12,n:"Gentiles Welcomed",d:"≈ AD 40",dc:"t",b:"Peter’s rooftop vision and a Roman officer’s household: the door opens wide to non-Jews — no converting to Judaism required.",r:"Acts 10",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Barnabas",dc:"t",b:"“Son of encouragement” — the one who vouches for scary ex-persecutor Paul and partners with him on the first journey.",r:"Acts 4; 9; 13",bp:"book-of-acts"},
+ {t:"bk",e:12,n:"James",d:"≈ AD 45–50",dc:"d",b:"Possibly the New Testament’s earliest letter — punchy, practical wisdom from Jesus’ brother: faith that doesn’t work isn’t faith.",r:"James",bp:"book-of-james"},
+ {t:"ev",e:12,n:"First Missionary Journey",d:"AD 46–48",dc:"t",b:"Paul and Barnabas island-hop and mountain-trek through Cyprus and Galatia, planting churches and collecting scars.",r:"Acts 13–14",bp:"book-of-acts"},
+ {t:"bk",e:12,n:"Galatians",d:"≈ AD 48–49",dc:"d",dn:"Some date it ≈ AD 55; either way, vintage early Paul.",b:"Paul’s fieriest letter: the gospel of grace needs no add-ons. “For freedom Christ has set us free.”",r:"Galatians",bp:"book-of-galatians"},
+ {t:"ev",e:12,n:"The Jerusalem Council",d:"≈ AD 49",dc:"t",b:"The make-or-break question: must Gentiles become Jews to follow Jesus? The apostles’ answer — no — sends the movement global.",r:"Acts 15",bp:"book-of-acts"},
+ {t:"p",e:12,n:"James, Brother of Jesus",d:"died ≈ AD 62",dc:"s",b:"The skeptical sibling who becomes leader of the Jerusalem church — “James the Just,” whose execution even the historian Josephus records.",r:"Acts 15 · James",bp:"book-of-james"},
+ {t:"ev",e:12,n:"Second & Third Journeys",d:"AD 49–57",dc:"t",b:"The gospel crosses into Europe — Philippi, Thessalonica, Corinth — then settles into Ephesus for years of daily teaching (and one riot).",r:"Acts 16–20",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Priscilla & Aquila",dc:"t",b:"A tentmaking couple who host churches in their home and quietly tutor the eloquent Apollos. Paul says all the Gentile churches owe them thanks.",r:"Acts 18 · Romans 16",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Timothy",dc:"t",b:"Paul’s protégé and troubleshooter — “my true son in the faith” — left to pastor the tricky church in Ephesus.",r:"Acts 16 · 1–2 Timothy",bp:"book-of-1-timothy"},
+ {t:"bk",e:12,n:"1 Thessalonians",d:"≈ AD 50",dc:"t",b:"Encouragement for a brand-new, persecuted church: work hard, love each other, and grieve with hope — “we will be with the Lord forever.”",r:"1 Thessalonians",bp:"book-of-1-thessalonians"},
+ {t:"bk",e:12,n:"2 Thessalonians",d:"≈ AD 51",dc:"t",b:"Follow-up for a church rattled about the end: stand firm, don’t be deceived, and don’t quit your day job.",r:"2 Thessalonians",bp:"book-of-2-thessalonians"},
+ {t:"bk",e:12,n:"1 Corinthians",d:"≈ AD 55",dc:"t",b:"Straight talk for a gifted, messy church — divisions, lawsuits, worship chaos — plus the love chapter and the great resurrection chapter.",r:"1 Corinthians",bp:"book-of-1-corinthians"},
+ {t:"bk",e:12,n:"2 Corinthians",d:"≈ AD 55–56",dc:"t",b:"Paul’s most personal letter, written through tears: treasure in clay jars, strength made perfect in weakness.",r:"2 Corinthians",bp:"book-of-2-corinthians"},
+ {t:"bk",e:12,n:"Romans",d:"≈ AD 57",dc:"t",b:"Paul’s masterwork: the gospel from every angle, written to a church he hadn’t met yet — to enlist them for a mission to Spain.",r:"Romans",bp:"book-of-romans"},
+ {t:"ev",e:12,n:"Paul Arrested; Voyage to Rome",d:"AD 57–60",dc:"t",b:"A temple riot, years in custody, an appeal to Caesar, a storm, a shipwreck, a snakebite — and Acts ends with Paul preaching in Rome, unhindered.",r:"Acts 21–28",bp:"book-of-acts"},
+ {t:"p",e:12,n:"Luke",dc:"t",b:"The “beloved physician” and travel companion — the pronoun quietly becomes “we” in Acts when he’s aboard — and author of the New Testament’s two longest books.",r:"Colossians 4 · Luke 1",bp:"book-of-luke"},
+ {t:"bk",e:12,n:"Ephesians",d:"≈ AD 60–62",dc:"t",b:"Written from prison: one new humanity in Christ, and armor for the real fight.",r:"Ephesians",bp:"book-of-ephesians"},
+ {t:"bk",e:12,n:"Philippians",d:"≈ AD 60–62",dc:"t",b:"A thank-you note from a prison cell that can’t stop saying “rejoice.”",r:"Philippians",bp:"book-of-philippians"},
+ {t:"bk",e:12,n:"Colossians",d:"≈ AD 60–62",dc:"t",b:"Christ is supreme over absolutely everything — so don’t trade him for hollow substitutes.",r:"Colossians",bp:"book-of-colossians"},
+ {t:"bk",e:12,n:"Philemon",d:"≈ AD 60–62",dc:"t",b:"A one-page bombshell: take your runaway slave back “no longer as a slave, but as a dear brother.”",r:"Philemon",bp:"book-of-philemon"},
+ {t:"bk",e:12,n:"1 Timothy",d:"≈ AD 62–64",dc:"d",b:"Coaching for a young pastor: sound teaching, qualified leaders, and godliness with contentment over cash.",r:"1 Timothy",bp:"book-of-1-timothy"},
+ {t:"bk",e:12,n:"Titus",d:"≈ AD 62–64",dc:"d",b:"Instructions for organizing scrappy young churches on Crete: leaders, sound doctrine, good works.",r:"Titus",bp:"book-of-titus"},
+ {t:"bk",e:12,n:"1 Peter",d:"≈ AD 62–64",dc:"t",b:"Hope for “elect exiles” under pressure: suffering now, glory ahead — follow in his steps.",r:"1 Peter",bp:"book-of-1-peter"},
+ {t:"ev",e:12,n:"Nero’s Persecution",d:"AD 64",dc:"s",b:"After Rome burns, Nero needs scapegoats and picks the Christians. Strong tradition places Peter’s and Paul’s deaths in these years.",r:"(Roman history · cf. 1 Peter 4)",bp:"book-of-1-peter"},
+ {t:"bk",e:12,n:"2 Timothy",d:"≈ AD 64–67",dc:"d",b:"Paul’s last known words, from a cold cell: “I have fought the good fight… I have kept the faith.”",r:"2 Timothy",bp:"book-of-2-timothy"},
+ {t:"bk",e:12,n:"2 Peter",d:"≈ AD 64–67",dc:"d",b:"A farewell warning against scoffers and frauds — and a promise of a new heavens and new earth.",r:"2 Peter",bp:"book-of-2-peter"},
+ {t:"bk",e:12,n:"Hebrews",d:"≈ AD 60s",dc:"d",b:"Jesus is greater — than angels, Moses, priests, and the whole sacrificial system — so don’t drift.",r:"Hebrews",bp:"book-of-hebrews",w:"Author unknown — “only God knows,” shrugged one early scholar."},
+ {t:"bk",e:12,n:"Jude",d:"≈ AD 60s–80s",dc:"d",b:"A short, vivid alarm from another brother of Jesus: contend for the faith.",r:"Jude",bp:"book-of-jude"},
+ {t:"ev",e:12,n:"The Temple Destroyed",d:"AD 70",dc:"s",b:"Rome crushes the Jewish revolt and burns the second temple, as Jesus had warned with tears. Judaism and Christianity are both transformed.",r:"Luke 21",bp:"book-of-luke"},
+ {t:"bk",e:12,n:"1–3 John",d:"≈ AD 85–95",dc:"t",b:"Three letters from the apostle of love to fractured churches: God is light, God is love — so walk in the light and love one another.",r:"1–3 John",bp:"books-of-1-3-john"},
+ {t:"ev",e:12,n:"John’s Vision on Patmos",d:"≈ AD 95",dc:"t",b:"Exiled on a prison island “because of the word of God,” John is handed the Bible’s final vision.",r:"Revelation 1",bp:"book-of-revelation"},
+ {t:"bk",e:12,n:"Revelation",d:"≈ AD 95",dc:"d",b:"The unveiling: letters to seven churches, a throne room, a Lamb, the fall of “Babylon” — and a new creation where God moves in with us. Eden, restored and upgraded.",r:"Revelation",bp:"book-of-revelation",w:"Most date it ≈ AD 95 under Domitian; a minority argue for the late 60s."}
+];
+
+/* ───────────── app ───────────── */
+const NODES = [...NODES_A, ...NODES_B, ...NODES_C];
+NODES.forEach(nd => {
+  nd.id = "n" + nd.e + "-" + nd.t + "-" + nd.n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+});
+const byId = {};
+NODES.forEach(nd => byId[nd.id] = nd);
+
+const KIND = {ev: "Event", p: "Person", bk: "Book"};
+const PILL = {1:"Primeval",2:"Patriarchs",3:"Exodus",4:"Conquest",5:"Judges",6:"United Kingdom",7:"Divided Kingdom",8:"Exile",9:"Return",10:"In Between",11:"Jesus",12:"Early Church"};
+const DCNOTE = {
+  s: "Date flag: anchored — lines up with records outside the Bible.",
+  t: "Date flag: traditional — a commonly taught ballpark, not a verified fact.",
+  d: "Date flag: debated — scholars genuinely disagree on this one.",
+  n: "The Bible doesn’t put a date on this, and neither do we."
+};
+
+let watched = new Set();
+try { watched = new Set(JSON.parse(localStorage.getItem("btl-watched") || "[]")); } catch (e) {}
+function saveWatched() { try { localStorage.setItem("btl-watched", JSON.stringify([...watched])); } catch (e) {} }
+
+function bpUrl(slug) { return slug === "" ? BP : BP + slug + "/"; }
+
+function nodeHtml(nd) {
+  let chip = "";
+  if (nd.d) chip = `<span class="chip ${nd.dc}">${nd.d}</span>`;
+  else if (nd.dc === "n") chip = `<span class="chip n">undated</span>`;
+  let dnote = "";
+  if (nd.dn) dnote = nd.dn;
+  else if (nd.d || nd.dc === "n") dnote = DCNOTE[nd.dc];
+  const done = watched.has(nd.id);
+  return `<div class="item ${nd.t}${done ? " done" : ""}" id="${nd.id}" data-t="${nd.t}">
+    <button class="row" aria-expanded="false" aria-controls="${nd.id}-d">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="nm">${nd.n}</span>
+      ${chip}
+      <span class="kind">${KIND[nd.t]}</span>
+      <span class="done-tick" aria-hidden="true">✓</span>
+      <span class="caret" aria-hidden="true">›</span>
+    </button>
+    <div class="detail" id="${nd.id}-d">
+      <div class="detail-in">
+        <p class="blurb">${nd.b}</p>
+        ${nd.r ? `<p class="meta-line"><b>Read:</b> ${nd.r}</p>` : ""}
+        ${nd.w ? `<p class="meta-line"><b>Written:</b> ${nd.w}</p>` : ""}
+        ${dnote ? `<p class="dnote">${dnote}</p>` : ""}
+        <div class="detail-actions">
+          ${nd.bp !== undefined ? `<a class="bp-btn" href="${bpUrl(nd.bp)}" target="_blank" rel="noopener">${nd.bp === "" ? "Browse BibleProject ↗" : "Overview on BibleProject ↗"}</a>` : ""}
+          <button class="seen-btn" data-seen>${done ? "Explored ✓" : "Mark explored"}</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function build() {
+  let html = "";
+  ERAS.forEach(er => {
+    if (er.id === 1) html += `<div class="t-label">The Old Testament</div>`;
+    if (er.id === 11) html += `<div class="divider"><span class="dmark" aria-hidden="true"></span><span>The New Testament</span></div>`;
+    const list = NODES.filter(nd => nd.e === er.id).map(nodeHtml).join("");
+    html += `<section class="era" id="era-${er.id}">
+      <div class="medal" aria-hidden="true">${er.id}</div>
+      <h2>${er.name}</h2>
+      <div class="era-meta"><span class="chip ${er.dc}">${er.date}</span><span>${er.span}</span><span class="era-count" data-count></span></div>
+      <p class="era-sum">${er.sum}</p>
+      ${er.dn ? `<p class="era-sum" style="font-style:italic">${er.dn}</p>` : ""}
+      <a class="era-link" href="${bpUrl(er.bp)}" target="_blank" rel="noopener">${er.bp === "" ? er.bpl : "Watch: " + er.bpl} ↗</a>
+      <div class="list">${list}</div>
+    </section>`;
+  });
+  document.getElementById("eras").innerHTML = html;
+  document.getElementById("erapills").innerHTML =
+    ERAS.map(er => `<a class="epill" href="#era-${er.id}">${er.id} · ${PILL[er.id]}</a>`).join("");
+}
+
+let typeF = "all";
+const searchEl = document.getElementById("search");
+const emptyEl = document.getElementById("empty");
+
+function applyFilters() {
+  const q = searchEl.value.trim().toLowerCase();
+  let total = 0;
+  document.querySelectorAll(".era").forEach(sec => {
+    let vis = 0;
+    sec.querySelectorAll(".item").forEach(it => {
+      const nd = byId[it.id];
+      const show = (typeF === "all" || nd.t === typeF) && (!q || (nd.n + " " + nd.b).toLowerCase().includes(q));
+      it.style.display = show ? "" : "none";
+      if (show) vis++;
+    });
+    const hide = vis === 0 && (q !== "" || typeF !== "all");
+    sec.style.display = hide ? "none" : "";
+    sec.querySelector("[data-count]").textContent = vis + (vis === 1 ? " item" : " items");
+    total += vis;
+  });
+  document.querySelectorAll(".t-label, .divider").forEach(d => d.style.display = q ? "none" : "");
+  emptyEl.style.display = total === 0 ? "block" : "none";
+  if (total === 0) emptyEl.textContent = `Nothing matches “${searchEl.value.trim()}” — try a name like David, an event like Passover, or a book like Romans.`;
+}
+
+function updateProgress() {
+  const n = [...watched].filter(id => byId[id]).length;
+  document.getElementById("progress").textContent = `Explored ${n} of ${NODES.length}`;
+}
+
+document.getElementById("chips").addEventListener("click", e => {
+  const b = e.target.closest(".fchip");
+  if (!b) return;
+  typeF = b.dataset.f;
+  document.querySelectorAll(".fchip").forEach(c => c.setAttribute("aria-pressed", c === b ? "true" : "false"));
+  applyFilters();
+});
+
+searchEl.addEventListener("input", applyFilters);
+
+document.getElementById("eras").addEventListener("click", e => {
+  const seen = e.target.closest("[data-seen]");
+  if (seen) {
+    const it = seen.closest(".item");
+    if (watched.has(it.id)) { watched.delete(it.id); it.classList.remove("done"); seen.textContent = "Mark explored"; }
+    else { watched.add(it.id); it.classList.add("done"); seen.textContent = "Explored ✓"; }
+    saveWatched(); updateProgress(); return;
+  }
+  const row = e.target.closest(".row");
+  if (row) {
+    const it = row.closest(".item");
+    const open = it.classList.toggle("open");
+    row.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+});
+
+build();
+updateProgress();
+applyFilters();
+</script>
+</body>
+</html>
